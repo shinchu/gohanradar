@@ -1,16 +1,23 @@
 import React from 'react';
-import { Button } from '@blueprintjs/core';
+import {Page, Card, Button} from '@shopify/polaris';
 import './App.scss'
+import getCurrentLocation from '../actions/location';
 
 class App extends React.Component {
+	
+	componentDidMount() {
+		getCurrentLocation();
+	}
+
 	render() {
-		const myButton = <Button value="送信" />
 		return (
-			<div>
-				<h1>Hello React</h1>
-				<p>hehehe</p>
-				{myButton}
-			</div>
+			<Page title="ごはんレーダー">
+				<Card sectioned>
+					<Button onClick={() => alert('Button clicked!')}>
+						Example button
+					</Button>
+				</Card>
+			</Page>
 		)
 	}
 }

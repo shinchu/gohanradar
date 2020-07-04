@@ -1,9 +1,31 @@
-@import "~normalize.css";
-@import "~@blueprintjs/core/lib/css/blueprint.css";
-@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+// CUD ver. 4
+// neutral color
+$black: rgb(0, 0, 0);
+$grey: rgb(132, 145, 158);
+$light-grey: rgb(200, 200, 203);
+$white: rgb(255, 255, 255);
 
-$black-color: #000;
+// base color
+$light-pink: rgb(255, 202, 191);
+$cream: rgb(255, 255, 128);
+$lime: rgb(216, 242, 85);
+$light-sky: rgb(191, 228, 255);
+$beige: rgb(255, 202, 128);
+$light-green: rgb(119, 217, 168);
+$light-purple: rgb(201, 172, 230);
+
+// accent color
+$red: rgb(255, 75, 0);
+$yellow: rgb(255, 241, 0);
+$green: rgb(3, 175, 122);
+$blue: rgb(0, 90, 255);
+$sky: rgb(77, 196, 255);
+$pink: rgb(255, 128, 130);
+$orange: rgb(246, 170, 0);
+$purple: rgb(153, 0, 153);
+$brown: rgb(128, 64, 0);
+
 body {
-	background-color: $black-color;
-	color: #fff;
+	background-color: $light-grey;
+	color: $black;
 }

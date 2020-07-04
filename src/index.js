@@ -1,12 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import enTranslations from '@shopify/polaris/locales/en.json';
+import { AppProvider } from '@shopify/polaris';
+import '@shopify/polaris/styles.css';
+
 import App from './components/App';
 
 const render = (Component) => {
 	ReactDOM.render(
 		<AppContainer>
-			<App />
+            <AppProvider i18n={enTranslations}>
+			    <App />
+            </AppProvider>
 		</AppContainer>,
 		document.getElementById('app')
 	);
