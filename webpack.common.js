@@ -1,4 +1,5 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
 	module: {
@@ -19,14 +20,17 @@ module.exports = {
 			},
 			{
 				test: /\.(png|jpg|gif|jpeg|ttf|svg)$/,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							name: '[path][name].[ext]',
-						}
-					}
-				]
+				use: {
+					loader: 'file-loader',
+					options: { name: '[path][name].[ext]' }
+				}
+			},
+			{
+				test: /\.(eot|ttf|woff|woff2)$/,
+				use: {
+					loader: 'file-loader',
+					options: { name: '[path][name].[ext]' }
+				}
 			}
 		]
 	},
@@ -42,6 +46,7 @@ module.exports = {
 			template: './src/index.html',
 			filename: './index.html',
 			favicon: './src/favicon.ico'
-		})
+		}),
+		new CleanWebpackPlugin(),
 	]
 }
