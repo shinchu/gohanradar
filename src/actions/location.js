@@ -1,12 +1,8 @@
 
 const getCurrentLocation = () => {
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition((position) => {
-            console.log(position.coords.latitude, position.coords.longitude);
-        });
-    } else {
-        console.log('Geolocation not available');
-    }
+    return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
 }
 
 export default getCurrentLocation;
