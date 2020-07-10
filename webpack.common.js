@@ -1,5 +1,6 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const DotEnv = require('dotenv-webpack');
 
 module.exports = {
 	entry: ['@babel/polyfill', './src/index.js'],
@@ -49,5 +50,9 @@ module.exports = {
 			favicon: './src/favicon.ico'
 		}),
 		new CleanWebpackPlugin(),
-	]
+		new DotEnv()
+	],
+	node: {
+		fs: 'empty'
+	}
 }
