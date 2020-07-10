@@ -6,7 +6,7 @@ import getCurrentLocation from '../actions/location';
 class App extends React.Component {
 
 	state = {
-		locationState: "Loading",
+		locationState: "LOADING",
 		error: null,
 		coords: null
 	}
@@ -35,22 +35,19 @@ class App extends React.Component {
 			return  <div>{error}</div>
 		}
 
-		if (locationState === "SUCCESS") {
-
-			return (
-				<Page title="ごはんレーダー">
-					<Card sectioned>
-						<Button onClick={() => alert('Button clicked!')}>
-							Example button
-						</Button>
-						<div>
-							Latitude: {coords.latitude}<br/>
-							Longitude: {coords.longitude}
-						</div>
-					</Card>
-				</Page>
-			)
-		}
+		return (
+			<Page title="ごはんレーダー">
+				<Card sectioned>
+					<Button onClick={() => alert('Button clicked!')}>
+						Example button
+					</Button>
+					<div>
+						Latitude: {coords.latitude}<br/>
+						Longitude: {coords.longitude}
+					</div>
+				</Card>
+			</Page>
+		)
 	}
 }
 
