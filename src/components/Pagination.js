@@ -1,11 +1,22 @@
 import React from "react";
+import { Pagination } from "@shopify/polaris";
 
-class Pagination extends React.Component {
+
+class Paginator extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
     render () {
+        const {currentPage, totalPages} = this.props;
+
         return (
-            <div></div>
+            <div className="pagination-container">
+                <Pagination label={`${currentPage}/${totalPages}`} />
+            </div>
         )
     }
 }
 
-export default Pagination;
+export default Paginator;

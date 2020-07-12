@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, RangeSlider } from "@shopify/polaris";
+import {Card, RangeSlider} from "@shopify/polaris";
 import getCurrentLocation from "../actions/location";
 import getRestaurants from "../actions/gnavi";
 
@@ -18,7 +18,7 @@ class Search extends React.Component {
 		this.currentLocation();
 	}
 
-    currentLocation () {
+    currentLocation = () => {
     	getCurrentLocation().then((position) => {
     		this.props.updateState({ locState: "SUCCESS", coords: position.coords });
 		}).catch((err) => {
@@ -26,12 +26,14 @@ class Search extends React.Component {
 		})
 	}
 
-	searchRestaurants(distRange, perPage, page) {
+	searchRestaurants = (distRange, perPage, page) => {
 
     	const test_coords = {
     		latitude: 35.680406,
 			longitude: 139.766486
 		}
+
+		this.props.updateState({ isLoading: true });
 
     	getRestaurants(test_coords, distRange, perPage, page).then((resp) => {
     		const totalHitCount = resp.data["total_hit_count"];
@@ -41,16 +43,25 @@ class Search extends React.Component {
                                  	 restaurants: resp.data["rest"],
                                  	 totalHitCount: totalHitCount,
 									 currentPage: 1,
-									 totalPages: totalPages });
+									 totalPages: totalPages,
+									 isSearched: true,
+			 						 isLoading: false });
 		}).catch((err) => {
 			this.props.updateState({ restFound: false,
                                  	 restaurants: [],
                                  	 totalHitCount: 0,
 									 restError: err.message,
 									 currentPage: 1,
-									 totalPages: 1 });
+									 totalPages: 1,
+									 isSearched: true,
+									 isLoading: false });
 		})
     }
+
+    handleRestSearch = (event) => {
+    	event.persist();
+    	this.searchRestaurants(this.state.distRange, this.state.perPage, 1);
+	}
 
     handleDistRangeChange = (value) => {
     	this.setState({ distRange: value });
@@ -68,6 +79,7 @@ class Search extends React.Component {
 			5: "3km"
 		}
 
+
 		if (this.props.locState === "LOADING") {
 			location = <div>Loading...</div>
 		} else if (this.props.locState === "ERROR") {
@@ -82,8 +94,12 @@ class Search extends React.Component {
 		}
 
         return (
-            <div>
-                { location }
+            <Card title="現在地"
+				  primaryFooterAction={{ content: "検索",
+				  						 onAction: this.handleRestSearch }}
+				  sectioned>
+
+                { location }<br />
                 <RangeSlider label="検索範囲"
 							 labelHidden={true}
 							 min={1}
@@ -93,11 +109,7 @@ class Search extends React.Component {
 							 prefix={ <span>現在地から</span> }
 							 suffix={ <span>{ distRanges[this.state.distRange] }以内</span> }
 							 onChange={ this.handleDistRangeChange } />
-
-                <Button onClick={() => { this.searchRestaurants(this.state.distRange, this.state.perPage, 1) }}>
-                    検索
-                </Button>
-            </div>
+            </Card>
         )
     }
 }

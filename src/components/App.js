@@ -1,8 +1,9 @@
 import React from 'react';
-import {Page, Card, Layout} from '@shopify/polaris';
+import { Page, Layout, Spinner } from '@shopify/polaris';
 import './App.scss'
-import RestList from "./RestList";
 import Search from "./Search";
+import RestContainer from "./RestContainer";
+import Paginator from "./Pagination";
 
 
 class App extends React.Component {
@@ -18,7 +19,9 @@ class App extends React.Component {
 			restFound: false,
 			totalHitCount: 0,
 			currentPage: 1,
-			totalPages: 1
+			totalPages: 1,
+			isSearched: false,
+			isLoading: false
 		}
 	}
 
@@ -28,30 +31,38 @@ class App extends React.Component {
 
 	render() {
 
-		const { restaurants, restFound } = this.state;
-		let rest, results;
+		const { isSearched, isLoading } = this.state;
+		let results, pagination;
 
-		if (restFound === true) {
-			rest = <div> { restaurants.map(restaurant => <RestList key={restaurant.id} data={restaurant} />) } </div>
-			results = <span> { this.state.totalHitCount } 件 </span>
+		if (isSearched) {
+			if (isLoading) {
+				results = <Spinner />
+			} else {
+				results = <RestContainer { ...this.state } />
+				pagination = <Paginator currentPage={ this.state.currentPage }
+										totalPages={ this.state.totalPages } />
+			}
 		} else {
-			rest = <div> 近くのごはん屋さんを探しましょう </div>
-			results = <span></span>
+			if (isLoading) {
+				results = <Spinner />
+			} else {
+				results = <span>近くのレストランを探してみましょう</span>
+				pagination = null
+			}
 		}
 
 		return (
 			<Page title="ごはんレーダー">
 				<Layout>
 					<Layout.Section secondary>
-						<Card title="現在地" sectioned>
-							<Search { ...this.state } updateState={this.updateState.bind(this)} />
-						</Card>
+						<Search { ...this.state } updateState={this.updateState.bind(this)} />
+						{ pagination }
 					</Layout.Section>
 					<Layout.Section>
-						<Card title="検索結果" sectioned>
+						<div className="rest-list-container">
 							{ results }
-							{ rest }
-						</Card>
+						</div>
+						{ pagination }
 					</Layout.Section>
 				</Layout>
 			</Page>

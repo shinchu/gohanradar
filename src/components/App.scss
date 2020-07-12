@@ -26,6 +26,21 @@ $purple: rgb(153, 0, 153);
 $brown: rgb(128, 64, 0);
 
 body {
-	background-color: $light-grey;
+	background-color: rgb(225, 225, 225);
 	color: $black;
+}
+
+.pagination-container {
+	margin-top: 1em;
+	display: flex;
+	justify-content: center;
+}
+
+.rest-list-container {
+	.Polaris-Card {
+		cursor: pointer;
+		&:hover {
+			background: #eee;
+		}
+	}
 }
