@@ -21,7 +21,10 @@ class App extends React.Component {
 			currentPage: 1,
 			totalPages: 1,
 			isSearched: false,
-			isLoading: false
+			isLoading: false,
+			history: {},
+			distRange: 2,
+      		perPage: 10,
 		}
 	}
 
@@ -35,12 +38,13 @@ class App extends React.Component {
 		let results, pagination;
 
 		if (isSearched) {
+			pagination = <Paginator { ...this.state }
+									updateState={ this.updateState.bind(this) } />
+
 			if (isLoading) {
 				results = <Spinner />
 			} else {
 				results = <RestContainer { ...this.state } />
-				pagination = <Paginator currentPage={ this.state.currentPage }
-										totalPages={ this.state.totalPages } />
 			}
 		} else {
 			if (isLoading) {
@@ -55,7 +59,7 @@ class App extends React.Component {
 			<Page title="ごはんレーダー">
 				<Layout>
 					<Layout.Section secondary>
-						<Search { ...this.state } updateState={this.updateState.bind(this)} />
+						<Search { ...this.state } updateState={ this.updateState.bind(this) } />
 						{ pagination }
 					</Layout.Section>
 					<Layout.Section>

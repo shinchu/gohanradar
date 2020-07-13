@@ -6,10 +6,6 @@ import getRestaurants from "../actions/gnavi";
 class Search extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      distRange: 2,
-      perPage: 10,
-    };
   }
 
   componentDidMount() {
@@ -29,7 +25,8 @@ class Search extends React.Component {
       });
   };
 
-  searchRestaurants = (distRange, perPage, page) => {
+  searchRestaurants = (page) => {
+
     const test_coords = {
       latitude: 35.680406,
       longitude: 139.766486,
@@ -37,10 +34,10 @@ class Search extends React.Component {
 
     this.props.updateState({ isLoading: true });
 
-    getRestaurants(test_coords, distRange, perPage, page)
+    getRestaurants(test_coords, this.props.distRange, this.props.perPage, page)
       .then((resp) => {
         const totalHitCount = resp.data["total_hit_count"];
-        const totalPages = Math.ceil(totalHitCount / perPage);
+        const totalPages = Math.ceil(totalHitCount / this.props.perPage);
 
         this.props.updateState({
           restFound: true,
@@ -50,6 +47,7 @@ class Search extends React.Component {
           totalPages: totalPages,
           isSearched: true,
           isLoading: false,
+          history: {}
         });
       })
       .catch((err) => {
@@ -62,17 +60,18 @@ class Search extends React.Component {
           totalPages: 1,
           isSearched: true,
           isLoading: false,
+          history: {}
         });
       });
   };
 
   handleRestSearch = (event) => {
     event.persist();
-    this.searchRestaurants(this.state.distRange, this.state.perPage, 1);
+    this.searchRestaurants(1);
   };
 
   handleDistRangeChange = (value) => {
-    this.setState({ distRange: value });
+    this.props.updateState({ distRange: value });
   };
 
   render() {
@@ -87,9 +86,9 @@ class Search extends React.Component {
     };
 
     if (this.props.locState === "LOADING") {
-      location = <div>Loading...</div>;
+      location = <div>現在地を取得しています...</div>;
     } else if (this.props.locState === "ERROR") {
-      location = <div>{error}</div>;
+      location = <div>現在地を取得できませんでした</div>;
     } else {
       location = (
         <div>
@@ -118,9 +117,9 @@ class Search extends React.Component {
           min={1}
           max={5}
           step={1}
-          value={this.state.distRange}
+          value={this.props.distRange}
           prefix={<span>現在地から</span>}
-          suffix={<span>{distRanges[this.state.distRange]}以内</span>}
+          suffix={<span>{distRanges[this.props.distRange]}以内</span>}
           onChange={this.handleDistRangeChange}
         />
       </Card>
