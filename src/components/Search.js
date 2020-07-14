@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, RangeSlider } from "@shopify/polaris";
-import getCurrentLocation from "../actions/location";
+import getCurrentPosition from "../actions/location";
 import getRestaurants from "../actions/gnavi";
 
 class Search extends React.Component {
@@ -13,7 +13,7 @@ class Search extends React.Component {
   }
 
   currentLocation = () => {
-    getCurrentLocation()
+    getCurrentPosition()
       .then((position) => {
         this.props.updateState({
           locState: "SUCCESS",
@@ -32,7 +32,8 @@ class Search extends React.Component {
       longitude: 139.766486,
     };
 
-    this.props.updateState({ isLoading: true });
+    this.props.updateState({ isSearched: false,
+                             isLoading: true });
 
     getRestaurants(test_coords, this.props.distRange, this.props.perPage, page)
       .then((resp) => {

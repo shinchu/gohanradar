@@ -36,6 +36,14 @@ body {
   justify-content: center;
 }
 
+.spinner-container {
+  width: 100%;
+  margin: 2em 0;
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+}
+
 .rest-list-container {
   .Polaris-Card {
     cursor: pointer;
