@@ -3,6 +3,7 @@ import axios from "axios";
 const GNAVI_API_URL = "https://api.gnavi.co.jp/RestSearchAPI/v3/";
 const API_KEY = process.env.REACT_APP_GNAVI_API_KEY;
 
+// TODO: Add credit
 const getRestaurants = (coords, distRange, perPage, page) => {
   return new Promise((resolve, reject) => {
     axios
@@ -13,7 +14,7 @@ const getRestaurants = (coords, distRange, perPage, page) => {
           range: distRange,
           hit_per_page: perPage,
           offset_page: page,
-        },
+        }
       })
       .then((resp) => {
         resolve(resp);

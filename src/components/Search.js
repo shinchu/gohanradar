@@ -1,11 +1,14 @@
 import React from "react";
-import { Card, RangeSlider } from "@shopify/polaris";
-import getCurrentPosition from "../actions/location";
+import { Card, RangeSlider, Button, Modal, TextContainer } from "@shopify/polaris";
+import { getCurrentPosition } from "../actions/location";
 import getRestaurants from "../actions/gnavi";
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      positionModal: false
+    }
   }
 
   componentDidMount() {
@@ -75,6 +78,10 @@ class Search extends React.Component {
     this.props.updateState({ distRange: value });
   };
 
+  handlePositionModal = () => {
+    this.setState({positionModal: !this.state.positionModal});
+  }
+
   render() {
     let location;
 
@@ -110,6 +117,18 @@ class Search extends React.Component {
         }}
         sectioned
       >
+        <Button onClick={this.handlePositionModal}>位置情報を取得</Button>
+        <Modal
+          open={this.state.positionModal}
+          title="位置情報を取得"
+          onClose={this.handlePositionModal}>
+          <Modal.Section>
+            <TextContainer>
+              <p>位置情報を取得する</p>
+            </TextContainer>
+          </Modal.Section>
+        </Modal>
+
         {location}
         <br />
         <RangeSlider
