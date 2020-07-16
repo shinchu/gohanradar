@@ -1,5 +1,5 @@
 import React from "react";
-import { Page, Layout, Spinner } from "@shopify/polaris";
+import { Page, Layout } from "@shopify/polaris";
 import "./App.scss";
 import Search from "./Search";
 import RestContainer from "./RestContainer";
@@ -13,6 +13,7 @@ class App extends React.Component {
       locState: "LOADING",
       locError: null,
       coords: null,
+      city: "現在地",
       restError: null,
       restaurants: [],
       restFound: false,
@@ -32,7 +33,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { isSearched, isLoading } = this.state;
+    const { isSearched, isLoading, restFound } = this.state;
     let results, pagination, spinner;
 
     if (isSearched) {
@@ -56,6 +57,10 @@ class App extends React.Component {
         pagination = null;
         spinner = null;
       }
+    }
+
+    if (!restFound) {
+      pagination = null;
     }
 
     return (

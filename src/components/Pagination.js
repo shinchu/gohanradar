@@ -34,14 +34,10 @@ class Paginator extends React.Component {
   }
 
   searchRestaurants = (page) => {
-    const test_coords = {
-      latitude: 35.680406,
-      longitude: 139.766486,
-    };
 
     this.props.updateState({ isLoading: true });
 
-    getRestaurants(test_coords, this.props.distRange, this.props.perPage, page)
+    getRestaurants(this.props.coords, this.props.distRange, this.props.perPage, page)
       .then((resp) => {
         this.props.updateState({
           restFound: true,

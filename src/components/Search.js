@@ -1,13 +1,15 @@
 import React from "react";
-import { Card, RangeSlider, Button, Modal, TextContainer } from "@shopify/polaris";
-import { getCurrentPosition } from "../actions/location";
+import { Card, RangeSlider, Button, Modal, TextContainer, TextField, ResourceList, ResourceItem, Scrollable} from "@shopify/polaris";
+import {getCurrentPosition, getCurrentLocationFromPosition, getCurrentPositionFromLocation} from "../actions/location";
 import getRestaurants from "../actions/gnavi";
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      positionModal: false
+      locationModal: false,
+      locationKeyword: "",
+      locationCandidates: []
     }
   }
 
@@ -22,23 +24,37 @@ class Search extends React.Component {
           locState: "SUCCESS",
           coords: position.coords,
         });
+
+        getCurrentLocationFromPosition(this.props.coords).then((resp) => {
+          const pref = resp.data.result["prefecture"]["pname"];
+          const city = resp.data.result["municipality"]["mname"];
+          this.props.updateState({city: `${pref} ${city}`});
+        }).catch((err) => {
+          console.log(err);
+        })
+
       })
       .catch((err) => {
         this.props.updateState({ locState: "ERROR", locError: err.message });
       });
   };
 
+  currentPosition = () => {
+    getCurrentPositionFromLocation(this.state.locationKeyword).then((resp) => {
+      const candidates = resp.data;
+      this.setState({locationCandidates: candidates});
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
   searchRestaurants = (page) => {
 
-    const test_coords = {
-      latitude: 35.680406,
-      longitude: 139.766486,
-    };
-
     this.props.updateState({ isSearched: false,
-                             isLoading: true });
+                             isLoading: true,
+                             history: {}});
 
-    getRestaurants(test_coords, this.props.distRange, this.props.perPage, page)
+    getRestaurants(this.props.coords, this.props.distRange, this.props.perPage, page)
       .then((resp) => {
         const totalHitCount = resp.data["total_hit_count"];
         const totalPages = Math.ceil(totalHitCount / this.props.perPage);
@@ -78,8 +94,33 @@ class Search extends React.Component {
     this.props.updateState({ distRange: value });
   };
 
-  handlePositionModal = () => {
-    this.setState({positionModal: !this.state.positionModal});
+  handleLocationModal = () => {
+    this.setState({locationModal: !this.state.locationModal});
+    this.clearLocationKeyword();
+  }
+
+  handleLocationKeyword = (value) => {
+    this.setState({locationKeyword: value});
+  }
+
+  clearLocationKeyword = () => {
+    this.setState({locationKeyword: "",
+                         locationCandidates: []});
+  }
+
+  handleLocationSelect = (location) => {
+    const city = location.properties.title;
+    const longitude = location.geometry.coordinates[0];
+    const latitude = location.geometry.coordinates[1];
+
+    this.props.updateState({coords: {
+        longitude: longitude,
+        latitude: latitude
+    },
+    city: city});
+
+    this.handleLocationModal();
+
   }
 
   render() {
@@ -100,9 +141,11 @@ class Search extends React.Component {
     } else {
       location = (
         <div>
+          Longitude: {this.props.coords.longitude}
+          <br />
           Latitude: {this.props.coords.latitude}
           <br />
-          Longitude: {this.props.coords.longitude}
+          City: {this.props.city}
           <br />
         </div>
       );
@@ -117,15 +160,40 @@ class Search extends React.Component {
         }}
         sectioned
       >
-        <Button onClick={this.handlePositionModal}>位置情報を取得</Button>
+        <Button onClick={this.handleLocationModal}>位置情報を取得</Button>
         <Modal
-          open={this.state.positionModal}
+          open={this.state.locationModal}
           title="位置情報を取得"
-          onClose={this.handlePositionModal}>
+          onClose={this.handleLocationModal}>
           <Modal.Section>
             <TextContainer>
-              <p>位置情報を取得する</p>
+              <p>現在地を取得</p>
+              <hr />
+              <p>キーワードから検索</p>
+              <TextField label=""
+                         type="text"
+                         value={this.state.locationKeyword}
+                         onChange={this.handleLocationKeyword}
+                         clearButton={true}
+                         onClearButtonClick={this.clearLocationKeyword}
+                         placeholder="例：五反田駅"
+                         connectedRight={<Button primary={true}
+                                                 onClick={this.currentPosition}>検索</Button>}></TextField>
+              <Scrollable shadow style={{height: "150px"}}>
+                <ResourceList items={this.state.locationCandidates}
+                              renderItem={(item) => {
+                                return (
+                                    <ResourceItem
+                                        shortcutActions={[{content: "選択",
+                                                            onAction: () => this.handleLocationSelect(item)}]}
+                                        onClick={() => this.handleLocationSelect(item)}>
+                                      {item.properties.title}
+                                    </ResourceItem>
+                                )
+                              }} />
+              </Scrollable>
             </TextContainer>
+
           </Modal.Section>
         </Modal>
 
