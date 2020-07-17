@@ -4,7 +4,7 @@ const GNAVI_API_URL = "https://api.gnavi.co.jp/RestSearchAPI/v3/";
 const API_KEY = process.env.REACT_APP_GNAVI_API_KEY;
 
 // TODO: Add credit
-const getRestaurants = (coords, distRange, perPage, page) => {
+const getRestaurants = (coords, distRange, freeword, perPage, page) => {
   return new Promise((resolve, reject) => {
     axios
       .get(`${GNAVI_API_URL}?keyid=${API_KEY}`, {
@@ -12,6 +12,7 @@ const getRestaurants = (coords, distRange, perPage, page) => {
           latitude: coords.latitude,
           longitude: coords.longitude,
           range: distRange,
+          freeword: freeword,
           hit_per_page: perPage,
           offset_page: page,
         }
@@ -32,7 +33,7 @@ const getRestaurants = (coords, distRange, perPage, page) => {
             break;
 
           case 404:
-            reject("お店が見つかれませんでした");
+            reject("お店が見つかりませんでした");
             break;
 
           case 405:

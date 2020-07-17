@@ -1,5 +1,6 @@
 import React from "react";
 import RestList from "./RestList";
+import RestNull from "./RestNull";
 
 class RestContainer extends React.Component {
 
@@ -15,7 +16,7 @@ class RestContainer extends React.Component {
 		if (restFound === true) {
 			rest = <div>{ restaurants.map(restaurant => <RestList key={restaurant.id} rest={restaurant} />) }</div>
 		} else {
-			rest = <div>近くのレストランが見つかりませんでした</div>
+			rest = <RestNull content="近くのレストランが見つかりませんでした" />;
 		}
 
         return (

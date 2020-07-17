@@ -5,6 +5,7 @@ import Search from "./Search";
 import RestContainer from "./RestContainer";
 import Paginator from "./Pagination";
 import Loading from "./Loading";
+import RestNull from "./RestNull";
 
 class App extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class App extends React.Component {
       locState: "LOADING",
       locError: null,
       coords: null,
+      freeword: "",
       city: "現在地",
       restError: null,
       restaurants: [],
@@ -53,7 +55,7 @@ class App extends React.Component {
         results = null;
         spinner = <Loading />;
       } else {
-        results = <span>近くのレストランを探してみましょう</span>;
+        results = <RestNull content="近くのレストランを探してみましょう"/>;
         pagination = null;
         spinner = null;
       }

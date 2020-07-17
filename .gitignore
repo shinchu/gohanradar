@@ -9,9 +9,7 @@ node_modules
 bower_components
 
 # design
-psd
-thumb
-sketch
+.sketch
 
 # env variables
 .env

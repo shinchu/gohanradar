@@ -56,3 +56,112 @@ body {
 .rest-card {
   margin-bottom: 1em;
 }
+
+.rest-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rest-list-content {
+  display: flex;
+}
+
+.rest-list-desc {
+  margin-left: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .access {
+    margin-top: 0.2em;
+  }
+}
+
+.rest-list-category {
+  margin-left: 1rem;
+}
+
+.loc-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.loc-search-divider {
+  position: relative;
+  outline: 0;
+  border: 0;
+  color: #eee;
+  text-align: center;
+}
+
+.loc-search-divider:before {
+  content: "";
+  background: #eee;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 3px;
+}
+
+.loc-search-divider:after {
+  content: attr(data-content);
+  position: relative;
+  display: inline-block;
+  padding: 0 0.5em;
+  color: #aaa;
+  background-color: #fcfcfa;
+}
+
+.rest-null {
+  width: 100%;
+  margin: 2em 0;
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+  color: #999;
+}
+
+.rest-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rest-image {
+  margin-bottom: 1em;
+}
+
+.thumb-container {
+  width: 80px;
+}
+
+.radar-circle {
+  fill: None;
+  stroke: green;
+}
+
+.radar-cover-circle {
+  fill: green;
+  opacity: .2;
+  stroke: None;
+}
+
+.radar-current-location {
+  fill: green;
+  stroke: None;
+  cursor: pointer;
+}
+
+.loc-indicator {
+  stroke: green;
+  fill: white;
+  cursor: pointer;
+}
+
+.loc-text {
+  color: #999;
+  font-size: 0.8rem;
+  cursor: pointer;
+}

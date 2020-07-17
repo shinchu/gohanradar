@@ -37,7 +37,7 @@ class Paginator extends React.Component {
 
     this.props.updateState({ isLoading: true });
 
-    getRestaurants(this.props.coords, this.props.distRange, this.props.perPage, page)
+    getRestaurants(this.props.coords, this.props.distRange, this.props.freeword, this.props.perPage, page)
       .then((resp) => {
         this.props.updateState({
           restFound: true,

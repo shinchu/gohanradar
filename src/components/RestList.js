@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Thumbnail, SkeletonThumbnail, Modal, TextContainer, TextField } from "@shopify/polaris";
+import { Card, Thumbnail, Modal, Heading, Badge } from "@shopify/polaris";
 import RestCard from "./RestCard";
 
 
@@ -20,34 +20,42 @@ class RestList extends React.Component {
 
         const imageUrl1 = this.props.rest.image_url.shop_image1;
         const imageUrl2 = this.props.rest.image_url.shop_image2;
-        let restImage, restAccess;
+        let restImage, restAccess, category;
 
         if (imageUrl1) {
-            restImage = <Thumbnail source={ imageUrl1 }
-                                   size="large"
-                                   alt={ this.props.rest.name } />
+            restImage = imageUrl1
         } else if (imageUrl2) {
-            restImage = <Thumbnail source={ imageUrl2 }
-                                   size="large"
-                                   alt={ this.props.rest.name } />
-
+            restImage = imageUrl2
         } else {
-            restImage = <SkeletonThumbnail size="large" />
+            restImage = "https://placehold.jp/d1d1d1/949494/80x80.png?text=no%20image"
         }
 
+        if (this.props.rest.category) {
+            category = <span className="rest-list-category"><Badge>{this.props.rest.category}</Badge></span>
+        }
+
+        if (this.props.rest.access.line) {
+            restAccess = <p className="access">{this.props.rest.access.line} {this.props.rest.access.station} {this.props.rest.access.station_exit} {this.props.rest.access.walk}分</p>
+        }
 
 
         return (
             <div className="rest-card">
                 <div onClick={this.handleRestModal}>
-                    <Card title={ this.props.rest.name }
-                          sectioned>
-                        { restImage }
-                        { this.props.rest.access.line }
-                        { this.props.rest.access.station }
-                        { this.props.rest.access.station_exit }
-                        { this.props.rest.access.walk }
-                        { this.props.rest.access.note }
+                    <Card title="">
+                        <div className="rest-list-wrapper">
+                            <div className="rest-list-content">
+                                <div className="thumb-container">
+                                    <Thumbnail source={ restImage }
+                                               size="large"
+                                               alt={ this.props.rest.name } />
+                                </div>
+                                <div className="rest-list-desc">
+                                    <Heading>{ this.props.rest.name }{category}</Heading>
+                                    { restAccess }
+                                </div>
+                            </div>
+                        </div>
                     </Card>
                 </div>
 
