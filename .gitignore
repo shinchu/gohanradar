@@ -17,3 +17,7 @@ bower_components
 
 # editor
 .idea/
+
+# report
+report.md
+report.pdf
