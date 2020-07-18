@@ -139,23 +139,23 @@ body {
 
 .radar-circle {
   fill: None;
-  stroke: green;
+  stroke: darkorange;
 }
 
 .radar-cover-circle {
-  fill: green;
+  fill: darkorange;
   opacity: .2;
   stroke: None;
 }
 
 .radar-current-location {
-  fill: green;
+  fill: darkorange;
   stroke: None;
   cursor: pointer;
 }
 
 .loc-indicator {
-  stroke: green;
+  stroke: darkorange;
   fill: white;
   cursor: pointer;
 }

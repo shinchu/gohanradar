@@ -4,7 +4,7 @@ import { AppContainer } from "react-hot-loader";
 import { AppProvider } from "@shopify/polaris";
 import "@shopify/polaris/styles.min.css";
 
-import App from "./components/App";
+import App from "./components/App"
 
 const render = (Component) => {
   ReactDOM.render(
