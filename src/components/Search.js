@@ -9,7 +9,7 @@ import {
   ResourceList,
   ResourceItem,
   Scrollable,
-  Tooltip
+  Tooltip,
 } from "@shopify/polaris";
 import {
   getCurrentPosition,
@@ -39,6 +39,7 @@ class Search extends React.Component {
         this.props.updateState({
           locState: "SUCCESS",
           coords: position.coords,
+          city: "現在地",
         });
 
         getCurrentLocationFromPosition(this.props.coords)
@@ -52,7 +53,11 @@ class Search extends React.Component {
           });
       })
       .catch((err) => {
-        this.props.updateState({ locState: "ERROR", locError: err.message });
+        this.props.updateState({
+          locState: "ERROR",
+          locError: err.message,
+          city: "現在地",
+        });
       });
   };
 
@@ -141,8 +146,8 @@ class Search extends React.Component {
   };
 
   clearFreeword = () => {
-    this.props.updateState({freeword: ""});
-  }
+    this.props.updateState({ freeword: "" });
+  };
 
   handleLocationSelect = (location) => {
     const city = location.properties.title;
@@ -155,7 +160,7 @@ class Search extends React.Component {
         latitude: latitude,
       },
       city: city,
-      locState: "SUCCESS"
+      locState: "SUCCESS",
     });
 
     this.handleLocationModal();
@@ -177,8 +182,8 @@ class Search extends React.Component {
       2: 20,
       3: 35,
       4: 55,
-      5: 80
-    }
+      5: 80,
+    };
 
     if (this.props.locState === "LOADING") {
       location = "現在地を取得しています...";
@@ -197,7 +202,6 @@ class Search extends React.Component {
         }}
         sectioned
       >
-
         <Modal
           open={this.state.locationModal}
           title="位置情報"
@@ -223,7 +227,7 @@ class Search extends React.Component {
                     検索
                   </Button>
                 }
-               />
+              />
               <Scrollable shadow style={{ height: "150px" }}>
                 <ResourceList
                   items={this.state.locationCandidates}
@@ -255,10 +259,38 @@ class Search extends React.Component {
           <circle cx="100" cy="100" r="35" className="radar-circle" />
           <circle cx="100" cy="100" r="20" className="radar-circle" />
           <circle cx="100" cy="100" r="10" className="radar-circle" />
-          <circle cx="100" cy="100" r={radius[this.props.distRange]} className="radar-cover-circle" />
-          <circle cx="100" cy="100" r="5" className="radar-current-location" onClick={this.handleLocationModal} />
-          <rect x="40" y="50" width="120" height="25" rx="10" ry="10" className="loc-indicator" onClick={this.handleLocationModal}/>
-          <text x="100" y="67" textAnchor="middle" className="loc-text" onClick={this.handleLocationModal}>{location}</text>
+          <circle
+            cx="100"
+            cy="100"
+            r={radius[this.props.distRange]}
+            className="radar-cover-circle"
+          />
+          <circle
+            cx="100"
+            cy="100"
+            r="5"
+            className="radar-current-location"
+            onClick={this.handleLocationModal}
+          />
+          <rect
+            x="40"
+            y="50"
+            width="120"
+            height="25"
+            rx="10"
+            ry="10"
+            className="loc-indicator"
+            onClick={this.handleLocationModal}
+          />
+          <text
+            x="100"
+            y="67"
+            textAnchor="middle"
+            className="loc-text"
+            onClick={this.handleLocationModal}
+          >
+            {location}
+          </text>
         </svg>
 
         <RangeSlider
@@ -282,7 +314,7 @@ class Search extends React.Component {
           clearButton={true}
           onClearButtonClick={this.clearFreeword}
           prefix={<span>キーワード：</span>}
-         />
+        />
       </Card>
     );
   }

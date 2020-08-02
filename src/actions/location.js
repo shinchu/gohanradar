@@ -3,7 +3,7 @@ import axios from "axios";
 export const getCurrentPosition = () => {
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject, {
-      enableHighAccuracy: true
+      enableHighAccuracy: true,
     });
   });
 };
@@ -33,7 +33,9 @@ export const getCurrentLocationFromPosition = (coords) => {
 export const getCurrentPositionFromLocation = (location) => {
   return new Promise((resolve, reject) => {
     axios
-      .get(`https://msearch.gsi.go.jp/address-search/AddressSearch?q=${location}`)
+      .get(
+        `https://msearch.gsi.go.jp/address-search/AddressSearch?q=${location}`
+      )
       .then((resp) => {
         resolve(resp);
       })

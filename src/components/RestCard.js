@@ -18,7 +18,14 @@ class RestCard extends React.Component {
       { term: "電話番号", description: this.props.tel },
       { term: "営業時間", description: this.props.opentime },
       { term: "定休日", description: this.props.holiday },
-      { term: "その他", description: <Link url={this.props.url} external>ぐるなびで詳しく見る</Link> }
+      {
+        term: "その他",
+        description: (
+          <Link url={this.props.url} external>
+            ぐるなびで詳しく見る
+          </Link>
+        ),
+      },
     ];
 
     return (
